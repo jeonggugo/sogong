@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Train Reservation - Admin</title>
+  <link rel="stylesheet" href="/css/admin_style.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-container">
+    <div class="logo">
+      <img src="/img/logo.png" alt="Let's AYU Logo">
+      <span>Let's AYU</span>
+    </div>
+    <nav class="menu">
+      <ul>
+        <li><a href="/tickets">승차권</a></li>
+        <li><a href="/tourtrains">관광열차</a></li>
+        <li><a href="/free_travel">자유여행</a></li>
+        <li><a href="/travel_products">여행상품</a></li>
+        <li>
+          <a class="welcome-message" th:text="${session.role == 'admin'} ? '관리자 '+${session.loginName}+'님 환영합니다.' : ${session.loginName} + '님 환영합니다.'"></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="index-section">
+    <h2>Hello Spring Boot!!</h2>
+    <div class="link-container">
+      <a href="/member/save" class="link-button">회원가입</a>
+      <a href="/member/login" class="link-button">로그인</a>
+      <a href="/sogong/train/" class="link-button">회원목록</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 Train Reservation. All Rights Reserved.</p>
+</footer>
+</body>
+</html>

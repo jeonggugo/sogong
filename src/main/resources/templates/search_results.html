@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="/css/main_style.css">
+</head>
+<body>
+<header class="navbar">
+    <div class="navbar-container">
+        <div class="logo">
+            <img src="/img/logo.png" alt="Logo">
+            <span>Train Reservation</span>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="results-section">
+        <h2>검색 결과</h2>
+        <p th:text="'출발지: ' + ${departure} + ', 도착지: ' + ${arrival}"></p>
+        <p th:text="'출발 날짜: ' + ${departureTime} + ', 승객 수: ' + ${passengerCount} + '명'"></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>출발 시간</th>
+                <th>도착 시간</th>
+                <th>열차 이름</th>
+                <th>열차 번호</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 검색 결과 반복 출력 -->
+            <tr th:each="train : ${trainSchedule}">
+                <td th:text="${train.depTime}"></td>
+                <td th:text="${train.arrTime}"></td>
+                <td th:text="${train.trainName}"></td>
+                <td th:text="${train.trainNum}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="/">다시 검색</a>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 Train Reservation. All Rights Reserved.</p>
+</footer>
+</body>
+</html>

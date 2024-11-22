@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Train Reservation - Admin</title>
+  <link rel="stylesheet" href="/css/user_list.css">
+  <script>
+    function filterMembers() {
+      const searchValue = document.getElementById("searchInput").value.toLowerCase();
+      const memberRows = document.querySelectorAll(".member-row");
+
+      memberRows.forEach(row => {
+        const nameCell = row.querySelector(".member-name");
+        if (nameCell && nameCell.textContent.toLowerCase().includes(searchValue)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-container">
+    <div class="logo">
+      <img src="/img/logo.png" alt="Let's AYU Logo">
+      <span>Let's AYU</span>
+    </div>
+    <nav class="menu">
+      <ul>
+        <li><a href="/tickets">승차권</a></li>
+        <li><a href="/tourtrains">관광열차</a></li>
+        <li><a href="/free_travel">자유여행</a></li>
+        <li><a href="/travel_products">여행상품</a></li>
+        <li>
+          <a class="welcome-message" th:text="${session.role == 'admin'} ? '관리자님 환영합니다.' : ${session.loginName} + '님 환영합니다.'"></a>
+        </li>
+        <li th:if="${session.role == 'admin'}">
+          <a href="/admin" class="admin-button">Admin Page</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="member-list-section">
+    <h2>회원 목록</h2>
+    <!-- 검색 기능 추가 -->
+    <div class="search-container">
+      <input type="text" id="searchInput" onkeyup="filterMembers()" placeholder="이름으로 검색하세요">
+    </div>
+    <table class="member-table">
+      <thead>
+      <tr>
+        <th>이름</th>
+        <th>이메일</th>
+        <th>비밀번호</th>
+        <th>전화번호</th>
+        <th>상세조회</th>
+        <th>삭제</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr th:if="${session.role == 'admin'}" th:each="member : ${memberList}" class="member-row">
+        <td class="member-name" th:text="${member.name}"></td>
+        <td th:text="${member.email}"></td>
+        <td th:text="${member.password}"></td>
+        <td th:text="${member.phone}"></td>
+        <td>
+          <div class="member-actions">
+            <a th:href="@{|/member/${member.email}|}" class="view-button">조회</a>
+          </div>
+        </td>
+        <td>
+          <div class="member-actions">
+            <a th:href="@{|/sogong/train/delete/${member.id}|}" class="delete-button">삭제</a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2024 Train Reservation. All Rights Reserved.</p>
+</footer>
+</body>
+</html>

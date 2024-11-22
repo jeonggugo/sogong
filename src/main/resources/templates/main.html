@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Train Reservation</title>
+  <link rel="stylesheet" href="/css/abc.css">
+  <link rel="stylesheet" href="/css/main_style.css"> <!-- KTX 스타일 포함 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+<!-- Header Section -->
+<header class="navbar">
+  <div class="navbar-container">
+    <div class="logo">
+      <img src="/img/logo.png" alt="Let's AYU Logo">
+      <span>Let's AYU</span>
+    </div>
+    <nav class="menu">
+      <ul>
+        <li>
+          <a class="welcome-message" th:text="${session.role == 'admin'} ? '관리자 '+${session.loginName}+'님 환영합니다.' : ${session.loginName} + '님 환영합니다.'"></a>
+        </li>
+        <li><a href="/tickets">승차권</a></li>
+        <li><a href="/tourtrains">관광열차</a></li>
+        <li><a href="/free_travel">자유여행</a></li>
+        <li><a href="/travel_products">여행상품</a></li>
+        <li>
+          <a href="/sogong/train/logout">로그아웃</a>
+        </li>
+        <li th:if="${session.role == 'admin'}">
+          <a href="/sogong/train/admin" class="admin-button">관리자 페이지</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- KTX Search Section -->
+<header class="header">
+  <div class="header-content">
+    <h1 class="title">KTX 기차표</h1>
+    <form th:action="@{/search}" method="post" class="search-box">
+      <div class="tabs">
+        <label><input type="radio" name="region" value="국내" checked> 국내</label>
+      </div>
+      <div class="fields">
+        <!-- 출발지 필드 -->
+        <div class="field dropdown">
+          <label>출발지</label>
+          <input type="text" id="departure" name="departure" value="서울" readonly onclick="toggleDropdown('departure-dropdown')">
+          <div id="departure-dropdown" class="dropdown-menu">
+            <div class="dropdown-header">대한민국</div>
+            <ul>
+              <li onclick="selectCity('departure', '서울')">서울</li>
+              <li onclick="selectCity('departure', '수원')">수원</li>
+              <li onclick="selectCity('departure', '평택')">평택</li>
+              <li onclick="selectCity('departure', '대전')">대전</li>
+              <li onclick="selectCity('departure', '동대구')">동대구</li>
+              <li onclick="selectCity('departure', '부산')">부산</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 교환 버튼 -->
+        <div class="swap-button-container">
+          <button type="button" class="swap-button" onclick="swapLocations()">🚅</button>
+        </div>
+
+        <!-- 도착지 필드 -->
+        <div class="field dropdown">
+          <label>도착지</label>
+          <input type="text" id="arrival" name="arrival" value="천안아산" readonly onclick="toggleDropdown('arrival-dropdown')">
+          <div id="arrival-dropdown" class="dropdown-menu">
+            <div class="dropdown-header">대한민국</div>
+            <ul>
+              <li onclick="selectCity('arrival', '서울')">서울</li>
+              <li onclick="selectCity('arrival', '수원')">수원</li>
+              <li onclick="selectCity('arrival', '평택')">평택</li>
+              <li onclick="selectCity('arrival', '대전')">대전</li>
+              <li onclick="selectCity('arrival', '동대구')">동대구</li>
+              <li onclick="selectCity('arrival', '부산')">부산</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 출발 시간 필드 -->
+        <div class="field">
+          <label>출발 시간</label>
+          <input type="text" id="departure-time" name="departureTime" readonly>
+        </div>
+
+        <!-- 승객 수 필드 -->
+        <div class="field">
+          <label>승객</label>
+          <div class="passenger-control">
+            <button type="button" id="passenger-decrease" class="passenger-btn">-</button>
+            <input type="number" id="passenger" name="passengerCount" value="1">
+            <button type="button" id="passenger-increase" class="passenger-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+
+      <button type="submit" class="search-btn">검색하기🔍</button>
+    </form>
+  </div>
+</header>
+
+<!-- Main Section -->
+<main>
+  <section class="search-section">
+    <h2>Book Your Train Tickets</h2>
+    <form th:action="@{/search}" method="get">
+      <!-- 추가 검색 폼 입력 -->
+    </form>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2024 Train Reservation. All Rights Reserved.</p>
+</footer>
+
+
+
+
+<!-- 드롭다운과 departure time 사용 스크립트 -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+<!-- JavaScript -->
+<script>
+  // 드롭다운 메뉴 토글
+  function toggleDropdown(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    dropdown.classList.toggle('active');
+  }
+
+  // 도시 선택 시 값 변경
+  function selectCity(inputId, city) {
+    const input = document.getElementById(inputId);
+    input.value = city;
+
+    // 드롭다운 닫기
+    const dropdown = document.getElementById(inputId + '-dropdown');
+    dropdown.classList.remove('active');
+  }
+
+  // 페이지 외부 클릭 시 드롭다운 닫기
+  document.addEventListener('click', (event) => {
+    const dropdowns = document.querySelectorAll('.dropdown-menu');
+    dropdowns.forEach((dropdown) => {
+      if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+  });
+  function swapLocations() {
+    const departureInput = document.getElementById('departure');
+    const arrivalInput = document.getElementById('arrival');
+
+    // 출발지와 도착지 값 교환
+    const temp = departureInput.value;
+    departureInput.value = arrivalInput.value;
+    arrivalInput.value = temp;
+  }
+  flatpickr("#departure-time", {
+    enableTime: false, // 시간 선택 불가능
+    dateFormat: "Y-m-d", // 날짜 및 시간 형식
+    minDate: "today", // 오늘 이후 날짜만 선택 가능
+    defaultDate: new Date(), // 기본 값을 오늘로 설정
+    locale: "ko" // 한국어 설정
+  });
+
+  // 승객 수 조정
+  document.getElementById('passenger-decrease').addEventListener('click', () => {
+    const passengerInput = document.getElementById('passenger');
+    let passengerCount = parseInt(passengerInput.value, 10);
+
+    if (passengerCount > 1) { // 최소 1명 이상
+      passengerCount -= 1;
+      passengerInput.value = passengerCount;
+    }
+  });
+
+  document.getElementById('passenger-increase').addEventListener('click', () => {
+    const passengerInput = document.getElementById('passenger');
+    let passengerCount = parseInt(passengerInput.value, 10);
+
+    if (passengerCount < 10) { // 최대 10명까지 제한
+      passengerCount += 1;
+      passengerInput.value = passengerCount;
+    }
+  });
+
+</script>
+</body>
+</html>
