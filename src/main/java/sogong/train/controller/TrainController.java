@@ -1,10 +1,3 @@
-/**********************************************************
- 사용자가 각종 URL에 접속했을 때의 상황을 제어한다
-
- 1. /train/reservation: 예약이 완료된 후의 화면이다
- 2. /train/search: 예약하고자 하는 열차의 정보를 입력하는 화면이다
- 3. /train/timetable: 시간표를 조회하여 예약할 수 있는 화면이다
- ***********************************************************/
 package sogong.train.controller;
 
 import sogong.train.api.TrainAPIController;
@@ -16,9 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class TrainController {
@@ -30,6 +21,7 @@ public class TrainController {
     private String timeTable;
 
     private final TrainAPIController trainAPIController;
+
     public TrainController(TrainAPIController trainAPIController) {
         this.trainAPIController = trainAPIController;
     }
@@ -40,7 +32,7 @@ public class TrainController {
     @GetMapping("/train/reservation")
     public String reservation(
             @RequestParam String result
-            ,ModelMap model) {
+            , ModelMap model) {
         timeTable = result;
         System.out.println("timeTable: " + timeTable);
 
@@ -57,10 +49,18 @@ public class TrainController {
     @GetMapping("/train/search")
     public String showTimetableForm(ModelMap model) {
         Map<String, String> stationCodes = trainAPIController.getStationCodes();
-        Map<String, String> trainGrades = trainAPIController.getTrainGrades();
+        String[] trainGrades = {"ITX"};
 
-        model.addAttribute("stationCodes", stationCodes);
+        // 역이름 가나다순으로 정렬
+        Map<String, String> sortedStationCodes = new HashMap<>();
+        List<Map.Entry<String, String>> entryList = new LinkedList<>(stationCodes.entrySet());
+        entryList.sort(Map.Entry.comparingByValue());
+        for (Map.Entry<String, String> entry : entryList) {
+            System.out.println("key : " + entry.getKey() + ", value : " + entry.getValue());
+        }
+
         model.addAttribute("trainGrades", trainGrades);
+        model.addAttribute("stationCodes", entryList);
         return "train_search";
     }
 
@@ -70,6 +70,7 @@ public class TrainController {
     @GetMapping("/train/timetable")
     // 사용자가 폼에서 입력한 데이터를 받아 처리한다
     public String timetable(
+            @RequestParam String gradeId,           // 열차 종류
             @RequestParam String depPlaceId,        // 출발역 코드
             @RequestParam String arrPlaceId,        // 도착역 코드
             @RequestParam String depPlandTime,      // 출발 날짜 (YYYY-MM-DD)
@@ -98,26 +99,17 @@ public class TrainController {
                 arrPlaceId,
                 formattedDepPlandTime
         );
-        System.out.println("timeTable: " + trainInfo);
 
         if (trainInfo.equals("직통 열차 없음")) {
             model.addAttribute("message", "직통 열차 없음");
         }
 
-        // 예약화면(/train/reservation)용으로 API정보를 다른 형식으로 가져온다
-        List<Map<String, String>> trainSchedule = trainAPIController.getTrainSchedule(
-                depPlaceId,
-                arrPlaceId,
-                formattedDepPlandTime
-        );
-        System.out.println("timeTable 2" + trainSchedule);
-
         // 비용 계산
-        // 성인 = 23700
+        // 성인 = 23,700원
         // 어린이 = 50% 할인
         // 노인 = 30% 할인
         int fare = 23700;
-        int finalFare = (int)((fare * Integer.parseInt(adultCount))
+        int finalFare = (int) ((fare * Integer.parseInt(adultCount))
                 + (fare * 0.5 * Integer.parseInt(childCount))
                 + (fare * 0.7 * Integer.parseInt(seniorCount)));
 
@@ -125,6 +117,17 @@ public class TrainController {
 
         model.addAttribute("fare", finalFare);               // 총 가격
         model.addAttribute("trainDetails", trainInfo);    // 열차 상세 정보
+
+
+        // 예약화면(/train/reservation)용으로 API정보를 다른 형식으로 가져온다
+        List<Map<String, String>> trainSchedule = trainAPIController.getTrainSchedule(
+                depPlaceId,
+                arrPlaceId,
+                formattedDepPlandTime,
+                gradeId
+        );
+        System.out.println("timeTable 2" + trainSchedule);
+
         model.addAttribute("trainSchedule", trainSchedule);
 
         return "train_timetable";
@@ -160,7 +163,7 @@ public class TrainController {
                     }
                 }
 
-            // 예외 처리
+                // 예외 처리
             } catch (Exception e) {
                 System.err.println("Error parsing entry: " + entry);
                 e.printStackTrace();

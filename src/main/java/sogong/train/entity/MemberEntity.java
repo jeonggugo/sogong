@@ -32,7 +32,7 @@ public class MemberEntity {
     private String phone;
 
     @Column
-    private String role = "user";
+    private String role;
 
     public static MemberEntity toMemberEntity(MemberDTO memberDTO) {
         MemberEntity memberEntity = new MemberEntity();
@@ -41,7 +41,7 @@ public class MemberEntity {
         memberEntity.setPassword(memberDTO.getPassword());
         memberEntity.setName(memberDTO.getName());
         memberEntity.setPhone(memberDTO.getPhone());
-        memberEntity.setRole(memberDTO.getRole());
+        memberEntity.setRole("user");
         return memberEntity;
     }
 }

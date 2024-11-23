@@ -1,12 +1,3 @@
-/**********************************************************
- 공공데이터포털에 있는 오픈 API를 활용하여 기차시간표를 조회한다
-
- 4번 API: 지역코드와 지역명
- 3번 API: 역코드와 역명
- 2번 API: 차량코드와 차량종류
- 1번 API: 2,3,4번 API에서 습득한 정보를 바탕으로 시간표 조회
- ***********************************************************/
-
 package sogong.train.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,7 +26,8 @@ public class TrainAPIController {
     @ResponseBody
     public Map<Integer, String> getCityCodes() {
         String URL4 = "http://apis.data.go.kr/1613000/" +
-                "TrainInfoService/getCtyCodeList?serviceKey=%s&_type=json";
+                "TrainInfoService/getCtyCodeList?serviceKey=%s&" +
+                "numOfRows=100&_type=json";
         Map<Integer, String> cityCodeMap = new HashMap<>();
 
         try {
@@ -75,7 +67,7 @@ public class TrainAPIController {
     public Map<String, String> getStationCodes() {
         String URL3 = "http://apis.data.go.kr/1613000/" +
                 "TrainInfoService/getCtyAcctoTrainSttnList?" +
-                "serviceKey=%s&_type=json&cityCode=%d";
+                "serviceKey=%s&numOfRows=100&_type=json&cityCode=%d";
         Map<String, String> stationCodeMap = new HashMap<>();
         Map<Integer, String> cityCodeMap = getCityCodes();
 
@@ -162,9 +154,6 @@ public class TrainAPIController {
             String depPlaceId,
             String arrPlaceId,
             String depPlandTime) {
-        System.out.println("depPlaceId: " + depPlaceId);
-        System.out.println("arrPlaceId: " + arrPlaceId);
-        System.out.println("depPlandTime: " + depPlandTime);
 
         String URL1 = "http://apis.data.go.kr/1613000/" +
                 "TrainInfoService/getStrtpntAlocFndTrainInfo?" +
@@ -177,7 +166,6 @@ public class TrainAPIController {
             RestTemplate restTemplate = new RestTemplate();
             URI uri = new URI(String.format(URL1, apiKey, depPlaceId, arrPlaceId, depPlandTime));
             String apiResult1 = restTemplate.getForObject(uri, String.class);
-            System.out.println(uri);
 
             // 문자열 형식의 JSON 데이터를 JsonNode 트리 구조로 변환
             ObjectMapper objectMapper = new ObjectMapper();
@@ -190,9 +178,9 @@ public class TrainAPIController {
                 // 출발시각, 도착시각, 차량종류를 찾아서 저장한다
                 for (JsonNode item : itemsNode) {
                     String depTime = item.path("depplandtime").asText();
-                    depTime = depTime.substring(8,12);
+                    depTime = depTime.substring(8, 12);
                     String arrTime = item.path("arrplandtime").asText();
-                    arrTime = arrTime.substring(8,12);
+                    arrTime = arrTime.substring(8, 12);
                     String trainName = item.path("traingradename").asText();
 
                     TrainInfo trainInfo = new TrainInfo(arrTime, depTime, trainName);
@@ -212,53 +200,47 @@ public class TrainAPIController {
     }
 
     // 열차 시간표를 가져오는 기능을 수행한다
-    // 출발역, 도착열, 출발 날짜를 입력받는다
+    // 출발역, 도착열, 출발 날짜, 열차 종류를 입력받는다
     // 데이터를 List<Map<String, String>> 형식으로 반환
     public List<Map<String, String>> getTrainSchedule(
             String depPlaceId,
             String arrPlaceId,
-            String depPlandTime
-    ) {
+            String depPlandTime,
+            String trainGrade) {
+
+        System.out.println("\ndepPlaceId123123: " + depPlaceId);
+        System.out.println("arrPlaceId123123: " + arrPlaceId);
+        System.out.println("depPlandTime: " + depPlandTime);
+
         String URL = "http://apis.data.go.kr/1613000/" +
                 "TrainInfoService/getStrtpntAlocFndTrainInfo?" +
                 "serviceKey=%s&depPlaceId=%s&arrPlaceId=%s" +
-                "&depPlandTime=%s&numOfRows=100&_type=json";
+                "&depPlandTime=%s&trainGradeCode=%s&numOfRows=100&_type=json";
+
         List<Map<String, String>> trainSchedule = new ArrayList<>();
+        String[] trainCodeArr = new String[]{}; // 기본값으로 빈 배열 설정
 
         try {
-            // API 서버에서 반환한 응답 데이터를 문자열로 저장
             RestTemplate restTemplate = new RestTemplate();
 
-            URI uri = new URI(String.format(URL, apiKey, depPlaceId, arrPlaceId, depPlandTime));
-            String apiResponse = restTemplate.getForObject(uri, String.class);
-
-            // 문자열 형식의 JSON 데이터를 JsonNode 트리 구조로 변환
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(apiResponse);
-
-            // JSON 데이터에서 item 배열 노드를 가져온다
-            JsonNode itemsNode = rootNode.path("response").path("body").path("items").path("item");
-
-            if (itemsNode.isArray()) {
-                // 출발시각, 도착시각, 차량종류, 열차번호를 찾아서 저장한다.
-                for (JsonNode item : itemsNode) {
-                    String depTime = item.path("depplandtime").asText().substring(8, 12); // HHmm 추출
-                    String arrTime = item.path("arrplandtime").asText().substring(8, 12); // HHmm 추출
-                    String trainName = item.path("traingradename").asText();
-                    String trainNo = item.path("trainno").asText();
-
-                    // 위에서 저장한 데이터를 형식에 맞게 변형한다
-                    Map<String, String> schedule = new HashMap<>();
-                    schedule.put("depTime", depTime.substring(0, 2) + ":" + depTime.substring(2, 4)); // HH:mm 형식
-                    schedule.put("arrTime", arrTime.substring(0, 2) + ":" + arrTime.substring(2, 4)); // HH:mm 형식
-                    schedule.put("trainName", trainName);
-                    schedule.put("trainNum", trainNo);
-
-                    trainSchedule.add(schedule);
-                }
+            // trainGrade에 따른 trainCode 설정
+            if (trainGrade.equals("KTX")) {
+                trainCodeArr = new String[]{"00", "16", "07", "19", "10"};
+            } else if (trainGrade.equals("ITX")) {
+                trainCodeArr = new String[]{"18", "08", "09"};
             }
 
-        // 예외 처리
+            // 각 trainCode에 대해 API 호출
+            for (String actualTrainCode : trainCodeArr) {
+                URI uri = new URI(String.format(URL, apiKey, depPlaceId, arrPlaceId, depPlandTime, actualTrainCode));
+                System.out.println("Request URI: " + uri);
+                System.out.println("gradeCode: " + actualTrainCode);
+
+                String apiResponse = restTemplate.getForObject(uri, String.class);
+
+                // JSON 데이터를 처리하여 trainSchedule에 추가
+                trainSchedule.addAll(parseTrainSchedule(apiResponse));
+            }
         } catch (URISyntaxException e) {
             throw new RuntimeException("URI 형식이 잘못되었습니다.", e);
         } catch (Exception e) {
@@ -266,4 +248,35 @@ public class TrainAPIController {
         }
         return trainSchedule;
     }
+
+    // 사용자가 입력한 열차 종류에 따라 서로 다른 api문서를 호출한다
+    // 완성된 api 링크를 입력받는다
+    // 데이터를 List<Map<String, String>> 형식으로 반환
+    private List<Map<String, String>> parseTrainSchedule(String apiResponse) throws Exception {
+        List<Map<String, String>> trainSchedule = new ArrayList<>();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(apiResponse);
+
+        JsonNode itemsNode = rootNode.path("response").path("body").path("items").path("item");
+
+        if (itemsNode.isArray()) {
+            for (JsonNode item : itemsNode) {
+                String depTime = item.path("depplandtime").asText().substring(8, 12); // HHmm 추출
+                String arrTime = item.path("arrplandtime").asText().substring(8, 12); // HHmm 추출
+                String trainName = item.path("traingradename").asText();
+                String trainNo = item.path("trainno").asText();
+
+                Map<String, String> schedule = new HashMap<>();
+                schedule.put("depTime", depTime.substring(0, 2) + ":" + depTime.substring(2, 4)); // HH:mm 형식
+                schedule.put("arrTime", arrTime.substring(0, 2) + ":" + arrTime.substring(2, 4)); // HH:mm 형식
+                schedule.put("trainName", trainName);
+                schedule.put("trainNum", trainNo);
+
+                trainSchedule.add(schedule);
+            }
+        }
+        return trainSchedule;
+    }
+
 }

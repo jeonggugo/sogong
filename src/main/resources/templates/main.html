@@ -41,8 +41,9 @@
   <div class="header-content">
     <h1 class="title">KTX 기차표</h1>
     <form th:action="@{/search}" method="post" class="search-box">
+      <!-- 열차종류 필드 -->
       <div class="tabs">
-        <label><input type="radio" name="region" value="국내" checked> 국내</label>
+        <label><input type="radio" name="trainGrade" value='KTX' checked> KTX</label>
       </div>
       <div class="fields">
         <!-- 출발지 필드 -->
