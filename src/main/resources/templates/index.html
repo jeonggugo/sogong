@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Train Reservation</title>
   <link rel="stylesheet" href="/css/main_style.css">
+  <link rel="stylesheet" href="/css/abc.css">
 </head>
 <body>
 <header class="navbar">
@@ -30,12 +31,85 @@
   <section class="search-section">
     <h2>Book Your Train Tickets</h2>
   </section>
+  </header>
 
-  <div class="slider">
+  <!-- KTX Search Section -->
+  <header class="header">
+    <div class="header-content">
+      <h1 class="title">KTX 기차표</h1>
+      <form th:action="@{/search}" method="post" class="search-box">
+        <!-- 열차종류 필드 -->
+        <div class="tabs">
+          <label><input type="radio" name="trainGrade" value='KTX' checked> KTX</label>
+          <label><input type="radio" name="trainGrade" value='ITX'> ITX</label>
+        </div>
+        <div class="fields">
+          <!-- 출발지 필드 -->
+          <div class="field dropdown">
+            <label>출발지</label>
+            <input type="text" id="departure" name="departure" value="서울" readonly onclick="toggleDropdown('departure-dropdown')">
+            <div id="departure-dropdown" class="dropdown-menu">
+              <div class="dropdown-header">대한민국</div>
+              <ul>
+                <li onclick="selectCity('departure', '서울')">서울</li>
+                <li onclick="selectCity('departure', '수원')">수원</li>
+                <li onclick="selectCity('departure', '평택')">평택</li>
+                <li onclick="selectCity('departure', '대전')">대전</li>
+                <li onclick="selectCity('departure', '동대구')">동대구</li>
+                <li onclick="selectCity('departure', '부산')">부산</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 교환 버튼 -->
+          <div class="swap-button-container">
+            <button type="button" class="swap-button" onclick="swapLocations()">🚅</button>
+          </div>
+
+          <!-- 도착지 필드 -->
+          <div class="field dropdown">
+            <label>도착지</label>
+            <input type="text" id="arrival" name="arrival" value="천안아산" readonly onclick="toggleDropdown('arrival-dropdown')">
+            <div id="arrival-dropdown" class="dropdown-menu">
+              <div class="dropdown-header">대한민국</div>
+              <ul>
+                <li onclick="selectCity('arrival', '서울')">서울</li>
+                <li onclick="selectCity('arrival', '수원')">수원</li>
+                <li onclick="selectCity('arrival', '평택')">평택</li>
+                <li onclick="selectCity('arrival', '대전')">대전</li>
+                <li onclick="selectCity('arrival', '동대구')">동대구</li>
+                <li onclick="selectCity('arrival', '부산')">부산</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 출발 시간 필드 -->
+          <div class="field">
+            <label>출발 시간</label>
+            <input type="text" id="departure-time" name="departureTime" readonly>
+          </div>
+
+          <!-- 승객 수 필드 -->
+          <div class="field">
+            <label>승객</label>
+            <div class="passenger-control">
+              <button type="button" id="passenger-decrease" class="passenger-btn">-</button>
+              <input type="number" id="passenger" name="passengerCount" value="1">
+              <button type="button" id="passenger-increase" class="passenger-btn">+</button>
+            </div>
+          </div>
+        </div>
+
+
+        <button type="submit" class="search-btn">검색하기🔍</button>
+      </form>
+    </div>
+  </header>
+ <!-- <div class="slider">
     <div class="slide" style="background-image: url('/img/img1.jpg');"></div>
     <div class="slide" style="background-image: url('/img/img2.jpg');"></div>
     <div class="slide" style="background-image: url('/img/img3.jpg');"></div>
-  </div>
+  </div> -->
 
 </main>
 

@@ -65,7 +65,7 @@ public class TrainAPIController {
     @GetMapping("/trainAPI/3")
     @ResponseBody
     public Map<String, String> getStationCodes() {
-        String URL3 = "http://apis.data.go.kr/1613000/" +
+        String URL3 = "https://apis.data.go.kr/1613000/" +
                 "TrainInfoService/getCtyAcctoTrainSttnList?" +
                 "serviceKey=%s&numOfRows=100&_type=json&cityCode=%d";
         Map<String, String> stationCodeMap = new HashMap<>();
