@@ -15,7 +15,7 @@ body {
 /* Header Styling */
 .navbar {
     background-color: #4CAF50;
-    padding: 1rem 2rem;
+    padding: 0.5rem 1rem;
     color: white;
 }
 
@@ -31,7 +31,7 @@ body {
 }
 
 .logo img {
-    height: 40px;
+    height: 30px;
     margin-right: 10px;
 }
 

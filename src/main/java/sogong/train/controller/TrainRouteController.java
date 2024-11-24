@@ -21,6 +21,7 @@ public class TrainRouteController {
      * 열차 경로 검색 메서드
      * 사용자로부터 출발지, 도착지, 날짜 등을 입력받아 열차 정보를 검색
      */
+    /*
     @PostMapping("/search")
     public String searchTrains(
             @RequestParam String departure,       // 출발지 (예: 서울)
@@ -38,10 +39,10 @@ public class TrainRouteController {
         String depPlaceId = stationCodes.getOrDefault(departure, null);
         String arrPlaceId = stationCodes.getOrDefault(arrival, null);
 
-      /*  if (depPlaceId == null || arrPlaceId == null) {
+        if (depPlaceId == null || arrPlaceId == null) {
             model.addAttribute("error", "출발지 또는 도착지가 올바르지 않습니다.");
             return "search_error"; // 에러 페이지 반환
-        }*/
+        }
 
         // TrainAPIController를 통해 열차 시간표 조회
         List<Map<String, String>> trainSchedule = trainAPIController.getTrainSchedule(
@@ -62,4 +63,6 @@ public class TrainRouteController {
         // 검색 결과 페이지로 이동
         return "search_results";
     }
+
+     */
 }

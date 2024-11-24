@@ -4,8 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Train Reservation</title>
+  <link rel="stylesheet" href="/css/main_style.css">
   <link rel="stylesheet" href="/css/abc.css">
-  <link rel="stylesheet" href="/css/main_style.css"> <!-- KTX 스타일 포함 -->
+  <!-- JS 경로 삽입 구문 -->
+  <script src="/js/boxslider.js" defer></script>
+  <script src="/js/dropdown.js" defer></script>
+  <script src="/js/flatpickr.js" defer></script>
+  <script src="/js/passengersnum.js" defer></script>
+  <script src="/js/swaplocation.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
@@ -125,76 +133,5 @@
 </footer>
 
 
-
-
-<!-- 드롭다운과 departure time 사용 스크립트 -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
-<!-- JavaScript -->
-<script>
-  // 드롭다운 메뉴 토글
-  function toggleDropdown(dropdownId) {
-    const dropdown = document.getElementById(dropdownId);
-    dropdown.classList.toggle('active');
-  }
-
-  // 도시 선택 시 값 변경
-  function selectCity(inputId, city) {
-    const input = document.getElementById(inputId);
-    input.value = city;
-
-    // 드롭다운 닫기
-    const dropdown = document.getElementById(inputId + '-dropdown');
-    dropdown.classList.remove('active');
-  }
-
-  // 페이지 외부 클릭 시 드롭다운 닫기
-  document.addEventListener('click', (event) => {
-    const dropdowns = document.querySelectorAll('.dropdown-menu');
-    dropdowns.forEach((dropdown) => {
-      if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) {
-        dropdown.classList.remove('active');
-      }
-    });
-  });
-  function swapLocations() {
-    const departureInput = document.getElementById('departure');
-    const arrivalInput = document.getElementById('arrival');
-
-    // 출발지와 도착지 값 교환
-    const temp = departureInput.value;
-    departureInput.value = arrivalInput.value;
-    arrivalInput.value = temp;
-  }
-  flatpickr("#departure-time", {
-    enableTime: false, // 시간 선택 불가능
-    dateFormat: "Y-m-d", // 날짜 및 시간 형식
-    minDate: "today", // 오늘 이후 날짜만 선택 가능
-    defaultDate: new Date(), // 기본 값을 오늘로 설정
-    locale: "ko" // 한국어 설정
-  });
-
-  // 승객 수 조정
-  document.getElementById('passenger-decrease').addEventListener('click', () => {
-    const passengerInput = document.getElementById('passenger');
-    let passengerCount = parseInt(passengerInput.value, 10);
-
-    if (passengerCount > 1) { // 최소 1명 이상
-      passengerCount -= 1;
-      passengerInput.value = passengerCount;
-    }
-  });
-
-  document.getElementById('passenger-increase').addEventListener('click', () => {
-    const passengerInput = document.getElementById('passenger');
-    let passengerCount = parseInt(passengerInput.value, 10);
-
-    if (passengerCount < 10) { // 최대 10명까지 제한
-      passengerCount += 1;
-      passengerInput.value = passengerCount;
-    }
-  });
-
-</script>
 </body>
 </html>

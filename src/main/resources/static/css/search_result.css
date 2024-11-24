@@ -1,0 +1,128 @@
+/* 전체적인 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    padding-bottom: 60px; /* Footer가 가리는 부분만큼 하단 공간 추가 */
+}
+
+.navbar {
+    background-color: #003366; /* 진한 파란색 */
+    padding: 10px 0;
+    color: white;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 50px;
+    margin-right: 15px;
+}
+
+.logo span {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* 결과 섹션 스타일 */
+.results-section {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.results-section h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #003366;
+}
+
+.results-section .info {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* 테이블 스타일 */
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.result-table thead {
+    background-color: #003366;
+    color: white;
+}
+
+.result-table th,
+.result-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+.result-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.result-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.result-table tbody tr:hover {
+    background-color: #f1f5fc;
+}
+
+.result-table th {
+    font-weight: bold;
+}
+
+/* 버튼 스타일 */
+.search-again-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 20px;
+    background-color: #003366;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.search-again-btn:hover {
+    background-color: #0055aa;
+    transform: translateY(-3px);
+}
+
+/* 푸터 스타일 */
+footer {
+    background-color: #34495e;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 10; /* Footer를 항상 위로 유지 */
+}

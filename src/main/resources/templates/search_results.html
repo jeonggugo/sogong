@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
-    <link rel="stylesheet" href="/css/main_style.css">
+    <link rel="stylesheet" href="/css/search_result.css">
 </head>
 <body>
 <header class="navbar">
@@ -19,10 +19,10 @@
 <main>
     <section class="results-section">
         <h2>검색 결과</h2>
-        <p th:text="'출발지: ' + ${departure} + ', 도착지: ' + ${arrival}"></p>
-        <p th:text="'출발 날짜: ' + ${departureTime} + ', 승객 수: ' + ${passengerCount} + '명'"></p>
+        <p th:text="'출발지: ' + ${departure} + ', 도착지: ' + ${arrival}" class="info"></p>
+        <p th:text="'출발 날짜: ' + ${departureTime} + ', 승객 수: ' + ${passengerCount} + '명'" class="info"></p>
 
-        <table>
+        <table class="result-table">
             <thead>
             <tr>
                 <th>출발 시간</th>
@@ -43,7 +43,7 @@
             </tr>
             </tbody>
         </table>
-        <a href="sogong/train/main">다시 검색</a>
+        <a href="sogong/train/main" class="search-again-btn">다시 검색</a>
     </section>
 </main>
 
