@@ -114,7 +114,6 @@ public class TrainController {
             System.out.println("2 " + formattedDate);
 
 
-
             // API를 사용하여 열차 시간표 가져오기
             List<Map<String, String>> trainSchedule = trainAPIController.getTrainSchedule(depCode, arrCode, formattedDate);
 
@@ -229,13 +228,14 @@ public class TrainController {
             String[] trainEntries = trainInfoString.split("TrainInfo");
 
             for (String entry : trainEntries) {
-                if (entry.contains("arrTime") && entry.contains("depTime") && entry.contains("trainNum")) {
+                if (entry.contains("arrTime") && entry.contains("depTime") && entry.contains("trainNum") && entry.contains("adultcharge")) {
                     String arrTime = extractValue(entry, "arrTime='");
                     String depTime = extractValue(entry, "depTime='");
                     String trainNum = extractValue(entry, "trainNum='");
+                    String adultcharge = extractValue(entry, "adultcharge='");
 
-                    if (!arrTime.isEmpty() && !depTime.isEmpty() && !trainNum.isEmpty()) {
-                        trainInfoList.add(new TrainInfo(arrTime, depTime, trainNum));
+                    if (!arrTime.isEmpty() && !depTime.isEmpty() && !trainNum.isEmpty() && !adultcharge.isEmpty()) {
+                        trainInfoList.add(new TrainInfo(arrTime, depTime, trainNum, adultcharge));
                     }
                 }
             }

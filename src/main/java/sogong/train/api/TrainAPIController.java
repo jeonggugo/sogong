@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
-import sogong.train.info.TrainInfo;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -213,12 +211,14 @@ public class TrainAPIController {
                 String arrTime = item.path("arrplandtime").asText().substring(8, 12); // HHmm 추출
                 String trainName = item.path("traingradename").asText();
                 String trainNo = item.path("trainno").asText();
+                String adultCharge = item.has("adultcharge") ? item.path("adultcharge").asText() : "0";
 
                 Map<String, String> schedule = new HashMap<>();
                 schedule.put("depTime", depTime.substring(0, 2) + ":" + depTime.substring(2, 4)); // HH:mm 형식
                 schedule.put("arrTime", arrTime.substring(0, 2) + ":" + arrTime.substring(2, 4)); // HH:mm 형식
                 schedule.put("trainName", trainName);
                 schedule.put("trainNum", trainNo);
+                schedule.put("adultCharge", adultCharge);  // 요금 추가
 
                 trainSchedule.add(schedule);
             }

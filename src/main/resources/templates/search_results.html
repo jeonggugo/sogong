@@ -19,7 +19,7 @@
 <main>
     <section class="results-section">
         <h2>검색 결과</h2>
-        <p th:text="'출발지: ' + ${departure} + ', 도착지: ' + ${arrival}" class="info"></p>
+        <p th:text="'출발지: ' + ${departure} +  ' 도착지: ' + ${arrival}" class="info"></p>
         <p th:text="'출발 날짜: ' + ${departureTime} + ', 승객 수: ' + ${passengerCount} + '명'" class="info"></p>
 
         <table class="result-table">
@@ -29,21 +29,48 @@
                 <th>도착 시간</th>
                 <th>열차 이름</th>
                 <th>열차 번호</th>
+                <th>운임 요금</th>
+                <th>승차권예약</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(trainSchedule)}">
-                <td colspan="4">검색 결과가 없습니다.</td>
+                <td colspan="6">검색 결과가 없습니다.</td>
             </tr>
             <tr th:each="train : ${trainSchedule}">
                 <td th:text="${train.depTime}"></td>
                 <td th:text="${train.arrTime}"></td>
                 <td th:text="${train.trainName}"></td>
                 <td th:text="${train.trainNum}"></td>
+                <td th:text="${train.adultCharge}"></td>
+                <td>
+                    <!-- 예약 버튼 추가 -->
+                    <form action="/reserve" method="post" id="reservationForm" style="display:inline-block;">
+                        <input type="hidden" name="depTime" th:value="${train.depTime}">
+                        <input type="hidden" name="arrTime" th:value="${train.arrTime}">
+                        <input type="hidden" name="trainName" th:value="${train.trainName}">
+                        <input type="hidden" name="trainNum" th:value="${train.trainNum}">
+                        <input type="hidden" name="adultCharge" th:value="${train.adultCharge}">
+                        <button type="submit" class="reserve-btn">예약</button>
+                    </form>
+                    <!-- 좌석 선택 버튼 추가 -->
+                    <form action="/selectSeat" method="post" style="display:inline-block;">
+                        <input type="hidden" name="depTime" th:value="${train.depTime}">
+                        <input type="hidden" name="arrTime" th:value="${train.arrTime}">
+                        <input type="hidden" name="trainName" th:value="${train.trainName}">
+                        <input type="hidden" name="trainNum" th:value="${train.trainNum}">
+                        <input type="hidden" name="adultCharge" th:value="${train.adultCharge}">
+                        <button type="submit" class="seat-select-btn">좌석 선택</button>
+                    </form>
+                </td>
             </tr>
+
             </tbody>
         </table>
-        <a href="sogong/train/main" class="search-again-btn">다시 검색</a>
+
+        <!-- 로그인 확인: name이 null이 아니면 메인 반환 아니면 index 반환 -->
+        <a th:if="${session.loginName != null}" href="/sogong/train/main" class="search-again-btn">다시 검색</a>
+        <a th:if="${session.loginName == null}" href="/" class="search-again-btn">다시 검색</a>
     </section>
 </main>
 

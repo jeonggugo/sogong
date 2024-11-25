@@ -7,11 +7,13 @@ public class TrainInfo {
     private String arrTime;     // 도착 시간
     private String depTime;     // 출발 시간
     private String trainName;   // 열차 이름
+    private String adultCharge;
 
-    public TrainInfo(String arrTime, String depTime, String trainName) {
+    public TrainInfo(String arrTime, String depTime, String trainName, String adultCharge) {
         this.arrTime = arrTime;
         this.depTime = depTime;
         this.trainName = trainName;
+        this.adultCharge = adultCharge;
     }
 
     // 시간 형식을 HH:MM으로 변환하는 메서드
