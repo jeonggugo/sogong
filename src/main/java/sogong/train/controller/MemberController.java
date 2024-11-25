@@ -1,6 +1,7 @@
 package sogong.train.controller;
 
 
+import jakarta.persistence.Id;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class MemberController {
        MemberDTO loginResult = memberService.login(memberDTO);
        if (loginResult != null) {
            // login성공
+           session.setAttribute("Id", loginResult.getId());
            session.setAttribute("loginEmail", loginResult.getEmail());
            session.setAttribute("loginName", loginResult.getName());
            session.setAttribute("role", loginResult.getRole());
@@ -48,7 +50,7 @@ public class MemberController {
            return "login";
        }
     }
-    @GetMapping("/sogong/train/main")//로그인 되지 않은 유저가 접속 시도 시 로그인 페이지로 이동
+    @GetMapping("/sogong/train/main")//그인 되지 않은 유저가 접속 시도 시 로그인 페이지로 이동
     public String mainForm(HttpSession session, Model model) {
         String loginName = (String) session.getAttribute("loginName");
         if (loginName != null) {

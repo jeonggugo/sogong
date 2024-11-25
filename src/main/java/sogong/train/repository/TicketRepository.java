@@ -1,4 +1,4 @@
 package sogong.train.repository;
 
-public interface TiketRepository {
+public interface TicketRepository {
 }

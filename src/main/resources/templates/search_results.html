@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results</title>
     <link rel="stylesheet" href="/css/search_result.css">
+    <script src="/js/checkLogin.js" defer></script>
 </head>
 <body>
 <header class="navbar">
@@ -45,14 +46,21 @@
                 <td th:text="${train.adultCharge}"></td>
                 <td>
                     <!-- 예약 버튼 추가 -->
-                    <form action="/reserve" method="post" id="reservationForm" style="display:inline-block;">
+                    <!-- 로그인 상태를 데이터 속성으로 전달 -->
+                    <div id="loginStatus" th:data-is-logged-in="${session.Id != null}"></div>
+
+                    <form action="/payment" method="post" id="reservationForm" style="display:inline-block;">
                         <input type="hidden" name="depTime" th:value="${train.depTime}">
                         <input type="hidden" name="arrTime" th:value="${train.arrTime}">
                         <input type="hidden" name="trainName" th:value="${train.trainName}">
                         <input type="hidden" name="trainNum" th:value="${train.trainNum}">
                         <input type="hidden" name="adultCharge" th:value="${train.adultCharge}">
-                        <button type="submit" class="reserve-btn">예약</button>
+                        <input type="hidden" name="departure" th:value="${departure}">
+                        <input type="hidden" name="arrival" th:value="${arrival}">
+                        <input type="hidden" name="pkId" th:value="${session.Id}"> <!-- ticket 생성을 위한 User Id 전송 -->
+                        <button type="button" class="reserve-btn" onclick="checkLogin()">예약</button>
                     </form>
+
                     <!-- 좌석 선택 버튼 추가 -->
                     <form action="/selectSeat" method="post" style="display:inline-block;">
                         <input type="hidden" name="depTime" th:value="${train.depTime}">
@@ -77,5 +85,6 @@
 <footer>
     <p>&copy; 2024 Train Reservation. All Rights Reserved.</p>
 </footer>
+
 </body>
 </html>

@@ -1,4 +1,5 @@
 package sogong.train.dto;
 
-public class TiketDTO {
+public class TicketDTO {
+
 }

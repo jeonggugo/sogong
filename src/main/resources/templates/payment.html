@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>결제 화면</title>
+</head>
+<body>
+<h1>결제 정보 확인</h1>
+<p>출발 시간: <span th:text="${depTime}"></span></p>
+<p>도착 시간: <span th:text="${arrTime}"></span></p>
+<p>열차 이름: <span th:text="${trainName}"></span></p>
+<p>열차 번호: <span th:text="${trainNum}"></span></p>
+<p>운임 요금: <span th:text="${adultCharge}"></span></p>
+
+<form action="/confirmPayment" method="post">
+  <input type="hidden" name="depTime" th:value="${depTime}">
+  <input type="hidden" name="arrTime" th:value="${arrTime}">
+  <input type="hidden" name="trainName" th:value="${trainName}">
+  <input type="hidden" name="trainNum" th:value="${trainNum}">
+  <input type="hidden" name="adultCharge" th:value="${adultCharge}">
+  <input type="hidden" name="pkId" th:value="${pkId}">
+  <button type="submit">결제 확인</button>
+</form>
+</body>
+</html>
