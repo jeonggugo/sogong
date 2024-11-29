@@ -1,0 +1,144 @@
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* 섹션 스타일 */
+.info-section {
+    background: url('../img/ayuticket.png') no-repeat center center;
+    width: 720px;
+    height: 230px;
+    padding: 30px;
+    border: 1px solid #444;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    margin: 0 auto 25px; /* center 정렬 */
+}
+
+.payment-section {
+    width: 755px;
+    margin: 0 auto 20px; /* center 정렬 */
+    padding: 15px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.info-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center; /* 텍스트 center 정렬 */
+}
+
+
+.info-details, .account-details {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #444;
+}
+
+.info-details span {
+    display: inline-block;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+.passenger-count, .seat-rank {
+    margin-top: 15px;
+}
+
+.seat {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+/* 가격 섹션 */
+.price-section {
+    font-size: 22px;
+    color: #d9534f;
+    font-weight: bold;
+    margin-top: 45px;
+    text-align: left;
+}
+
+/* 버튼 스타일 */
+button {
+    display: block;
+    width: 88%;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 20px auto 0; /* margin-top과 좌우 중앙 정렬 */
+}
+
+button:hover {
+    background-color: #003366;
+}
+
+/* 알림 텍스트 */
+.notice {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* 결제 정보 스타일 */
+.account-details p {
+    margin: 5px 0;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .info-section, .payment-section {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .info-header {
+        font-size: 20px;
+    }
+
+    .price-section {
+        font-size: 18px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 12px;
+    }
+}

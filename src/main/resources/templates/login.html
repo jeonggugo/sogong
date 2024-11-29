@@ -4,9 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-  <link rel="stylesheet" href="/css/log_style.css">
+  <link rel="stylesheet" href="/css/log_header.css">
+  <link rel="stylesheet" href="/css/log_style.css?ver=1">
+  <!--ver=1을 추가해주면 크롬에서 캐시 문제로 반영이 안되는 부분을 해결할 수 있음-->
+
+
 </head>
+
+
 <body>
+<header class="navbar">
+  <div class="navbar-container">
+    <div class="logo">
+      <img src="/img/logo.png" alt="Let's AYU Logo">
+      <span>Let's AYU</span>
+    </div>
+    <nav class="menu">
+      <ul>
+        <li><a href="/tickets">승차권</a></li>
+        <li><a href="/tourtrains">관광열차</a></li>
+        <li><a href="/free_travel">자유여행</a></li>
+        <li><a href="/travel_products">여행상품</a></li>
+        <li><a href="/sogong/train/login">로그인</a></li>
+        <li><a href="/sogong/train/save">회원가입</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
 <div class="login-container">
   <h2>Login</h2>
   <form action="/sogong/train/login" method="post" id="loginForm">
@@ -27,5 +53,9 @@
     <a href="/sogong/train/save" class="signup-button">Sign Up</a>
   </div>
 </div>
+</main>
+<footer>
+  <p>&copy; 2024 Train Reservation. All Rights Reserved.</p>
+</footer>
 </body>
 </html>

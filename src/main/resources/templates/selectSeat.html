@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>좌석 선택</title>
+    <link rel="stylesheet" href="/css/Select_Seat.css">
+</head>
+<body>
+<h1>좌석 선택</h1>
+
+<!-- 열차 번호 선택 -->
+<div class="train-tabs">
+    <button class="tab active" onclick="selectCarriage(1)">5호차</button>
+    <button class="tab" onclick="selectCarriage(2)">6호차</button>
+    <button class="tab" onclick="selectCarriage(3)">7호차</button>
+    <button class="tab" onclick="selectCarriage(4)">8호차</button>
+    <button class="tab" onclick="selectCarriage(5)">9호차</button>
+</div>
+
+<!-- 좌석 배치 -->
+<div id="seat-map">
+    <!-- 좌석은 JavaScript로 동적 생성 -->
+</div>
+
+<!-- 선택된 좌석 -->
+<div class="selected-seats">
+    <h3>선택된 좌석:</h3>
+    <p id="selected-seats-list">없음</p>
+</div>
+
+<!-- 완료 버튼 -->
+<form action="/payment" method="post" style="display:flex; justify-content:center;">
+    <div class="controls">
+        <button id="submitBtn" onclick="submitSeats()" disabled>좌석 선택 완료</button>
+        <input type="hidden" name="selectSeat" id="selectedSeatsInput">
+        <input type="hidden" name="depTime" th:value="${depTime}">
+        <input type="hidden" name="arrTime" th:value="${arrTime}">
+        <input type="hidden" name="trainName" th:value="${trainName}">
+        <input type="hidden" name="trainNum" th:value="${trainNum}">
+        <input type="hidden" name="adultCharge" th:value="${adultCharge}">
+        <input type="hidden" name="departure" th:value="${departure}">
+        <input type="hidden" name="arrival" th:value="${arrival}">
+        <input type="hidden" name="passengerCount" th:value="${passengerCount}">
+        <input type="hidden" name="departureTime" th:value="${departureTime}">
+        <input type="hidden" name="pkId" th:value="${pkId}"> <!-- ticket 생성을 위한 User Id 전송 -->
+    </div>
+</form>
+
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const passengerCount = /*[[${passengerCount}]]*/ 0;
+    /*]]>*/
+</script>
+<script src="/js/Trainseat.js"></script>
+</script>
+</body>
+</html>

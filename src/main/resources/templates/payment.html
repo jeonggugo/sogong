@@ -2,15 +2,48 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>결제 화면</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/pay.css">
+  <title>결제 페이지</title>
 </head>
 <body>
-<h1>결제 정보 확인</h1>
-<p>출발 시간: <span th:text="${depTime}"></span></p>
-<p>도착 시간: <span th:text="${arrTime}"></span></p>
-<p>열차 이름: <span th:text="${trainName}"></span></p>
-<p>열차 번호: <span th:text="${trainNum}"></span></p>
-<p>운임 요금: <span th:text="${adultCharge}"></span></p>
+<h1>결제 페이지</h1>
+
+<!-- 예약 정보 섹션 -->
+<div class="info-section">
+  <div class="info-header">열차 예약 정보</div>
+  <div class="info-details">
+    <span>편도</span>
+    <span>출발: <span th:text="${departure}">서울</span></span>
+    <span>도착: <span th:text="${arrival}">천안아산</span></span>
+  </div>
+  <div class="info-details">
+    <span>날짜: <span th:text="${departureTime}">2024-11-22</span></span>
+    <span>출발 시간: <span th:text="${depTime}">14:25</span></span>
+    <span>도착 시간: <span th:text="${arrTime}">18:55</span></span>
+  </div>
+  <div class="passenger-count">
+    <span>인원: <span th:text="${passengerCount}">1</span>명</span>
+  </div>
+  <div class="member-seat">
+    <span>좌석: <span th:text="${selectSeat}">null</span></span>
+  </div>
+
+  <div class="price-section">
+    ₩<span th:text="${totalCharge}+'원'">75,000</span>
+  </div>
+</div>
+
+<!-- 결제 정보 섹션 -->
+<div class="payment-section">
+  <div class="info-header">결제 정보</div>
+  <div class="account-details">
+    <p><strong>무통장 입금 계좌</strong></p>
+    <p>은행명: AYU은행</p>
+    <p>계좌번호: 111111-111111-111111</p>
+    <p>예금주: Let's AYU</p>
+  </div>
+</div>
 
 <form action="/confirmPayment" method="post">
   <input type="hidden" name="depTime" th:value="${depTime}">
@@ -19,7 +52,11 @@
   <input type="hidden" name="trainNum" th:value="${trainNum}">
   <input type="hidden" name="adultCharge" th:value="${adultCharge}">
   <input type="hidden" name="pkId" th:value="${pkId}">
-  <button type="submit">결제 확인</button>
+  <button type="submit">결제 완료</button>
 </form>
+
+<div class="notice">
+  입금확인 후, 티켓 정보 확인이 가능합니다.
+</div>
 </body>
 </html>

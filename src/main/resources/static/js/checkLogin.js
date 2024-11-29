@@ -8,6 +8,6 @@ function checkLogin() {
         window.location.href = '/sogong/train/login'; // 로그인 페이지로 리다이렉트
     } else {
         // 로그인된 경우 폼 제출
-        document.getElementById('reservationForm').submit();
+        document.getElementById('seat-select-btn').submit();
     }
 }

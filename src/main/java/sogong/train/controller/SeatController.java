@@ -1,21 +1,17 @@
 package sogong.train.controller;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-public class TicketController {
-    @PostMapping("/payment")
-    public String reservation(
+public class SeatController {
+    @PostMapping("/selectSeat")
+    public String selectSeat(
             @RequestParam String depTime,
             @RequestParam String arrTime,
             @RequestParam String trainName,
@@ -26,8 +22,8 @@ public class TicketController {
             @RequestParam String passengerCount,
             @RequestParam String departureTime,
             @RequestParam String pkId,
-            @RequestParam String selectSeat,
             Model model) {
+        model.addAttribute("passengerCount", passengerCount);
         int charge = Integer.parseInt(adultCharge);
         int passenger = Integer.parseInt(passengerCount);
         int totlaCharge = charge * passenger;
@@ -42,12 +38,7 @@ public class TicketController {
         model.addAttribute("totalCharge", totlaCharge);
         model.addAttribute("departureTime", departureTime);
         model.addAttribute("pkId", pkId);
-        model.addAttribute("selectSeat", selectSeat);
-        return "payment";
+
+        return "selectSeat";
     }
-
-
-
 }
-
-

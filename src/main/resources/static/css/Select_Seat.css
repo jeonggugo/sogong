@@ -1,0 +1,137 @@
+/* 전체적인 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+    padding-bottom: 60px; /* Footer가 가리는 부분만큼 하단 공간 추가 */
+}
+
+/* 열차 탭 스타일 */
+.train-tabs {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.tab {
+    background-color: #003366;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tab.active, .tab:hover {
+    background-color: #0055aa;
+}
+
+/* 좌석 배치 스타일 */
+#seat-map {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.seat {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgray;
+    border: 1px solid #ccc;
+    border-radius: 5px 5px 5px 5px; /* 상단을 둥글게 */
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.seat::after {
+    content: "";
+    position: absolute;
+    bottom: 5px; /* 다리의 세로 위치 */
+    left: -10px; /* 다리를 왼쪽으로 붙임 */
+    width: 10px; /* 다리의 폭 */
+    height: 40px; /* 다리의 높이 */
+    background-color: gray;
+    border-radius: 2px;
+}
+
+.seat.selected {
+    background-color: #26c14f;
+}
+
+.seat.unavailable {
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+/* 선택된 좌석 스타일 */
+.selected-seats {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* 완료 버튼 스타일 */
+/* 완료 버튼 스타일 */
+/* 완료 버튼 스타일 */
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 수직 정렬을 위한 속성 추가 */
+    margin-top: 20px;
+    text-align: center; /* 부모 요소에서 텍스트를 중앙 정렬 */
+}
+
+#submitBtn {
+    padding: 12px 20px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 0 auto; /* 버튼 자체의 중앙 정렬 */
+}
+
+
+#submitBtn:hover:not([disabled]) {
+    background-color: #0055aa;
+    transform: translateY(-3px);
+}
+
+#submitBtn[disabled] {
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+/* 푸터 스타일 */
+footer {
+    background-color: #34495e;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 10; /* Footer를 항상 위로 유지 */
+}
